@@ -1,0 +1,46 @@
+
+    <h4>
+        <label for="first-name">First Name</label>
+    </h4>
+    <input #firstName id="first-name" />
+
+    <h4>
+        <label for="last-name">Last Name</label>
+    </h4>
+    <input #lastName id="last-name" />
+    
+    <h4>
+        <label for="company">Company</label>
+    </h4>
+    <input #company id="company" />
+
+    
+    <h4>
+        <label for="email">E-mail</label>
+    </h4>
+    <input #email id="email" />
+
+    <h4>
+        <label >Phones</label>
+    </h4>
+    <div *ngFor="let phone of phones; let last = last">
+        <select #phoneType>
+            <option 
+                    *ngFor="let type of phone_types"
+                    value="{{type}}"
+                    [selected]="type == phone.type"
+                    >{{type}}</option>
+        </select>
+        <input #phoneNumber placeholder="{{phone.number}}"/>
+        <button *ngIf="phone.id == -1"
+                (click)="addPhone(phoneType.value, phoneNumber.value); phoneNumber.value='';">+</button>
+        <button *ngIf="phone.id !== -1"
+                (click)="removePhone(phone.id);">-</button>
+    </div>
+
+    <div>
+        <button (click)="saveContact(firstName.value,lastName.value,company.value,email.value)"
+        >Save</button>
+        <button>Go Back</button>
+    </div>
+
