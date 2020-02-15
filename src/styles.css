@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 body {
     background-color: white;
-    margin: 0 200px;
+    margin: 50px 150px !important;
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -14,4 +14,28 @@ body {
 
 .clearfix:after {
     clear: both;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+button {
+    background-color: lightgray;
+    margin: 5px;
+    padding: 5px;
+    font-size: medium;
+    border-radius: 4px;
+    border: none;
+    color:white;
+}
+
+button.destructiveButton{
+    background-color: red;
+}
+
+button.actionButton{
+    background-color: #1abc9c;
+}
+
+button:disabled {
+    background-color: #bdc3c7;
 }

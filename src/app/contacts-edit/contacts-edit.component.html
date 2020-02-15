@@ -1,46 +1,73 @@
 
-    <h4>
-        <label for="first-name">First Name</label>
-    </h4>
-    <input #firstName id="first-name" />
-
-    <h4>
-        <label for="last-name">Last Name</label>
-    </h4>
-    <input #lastName id="last-name" />
-    
-    <h4>
-        <label for="company">Company</label>
-    </h4>
-    <input #company id="company" />
-
-    
-    <h4>
-        <label for="email">E-mail</label>
-    </h4>
-    <input #email id="email" />
-
-    <h4>
-        <label >Phones</label>
-    </h4>
-    <div *ngFor="let phone of phones; let last = last">
-        <select #phoneType>
-            <option 
-                    *ngFor="let type of phone_types"
-                    value="{{type}}"
-                    [selected]="type == phone.type"
-                    >{{type}}</option>
-        </select>
-        <input #phoneNumber placeholder="{{phone.number}}"/>
-        <button *ngIf="phone.id == -1"
-                (click)="addPhone(phoneType.value, phoneNumber.value); phoneNumber.value='';">+</button>
-        <button *ngIf="phone.id !== -1"
-                (click)="removePhone(phone.id);">-</button>
-    </div>
-
-    <div>
-        <button (click)="saveContact(firstName.value,lastName.value,company.value,email.value)"
-        >Save</button>
-        <button>Go Back</button>
-    </div>
+    <h2 mat-dialog-title>{{title}} 
+        <span *ngIf="isEdit">
+            {{contact.firstName}} {{contact.lastName}}
+        </span>
+    </h2>
+    <mat-dialog-content>
+        <div [formGroup]="form"><h4>
+            <label for="first-name">First Name</label>
+        </h4>
+            <input  matInput
+                    #firstName 
+                    id="first-name"
+                    placeholder="First Name"
+                    [(ngModel)]="contact.firstName"
+                    formControlName="firstName" />
+        <h4>
+            <label for="last-name">Last Name</label>
+        </h4>
+            <input #lastName 
+                    id="last-name"
+                    placeholder="Last Name"
+                    [(ngModel)]="contact.lastName"
+                    formControlName="lastName"  />
+        <h4>
+            <label for="company">Company</label>
+        </h4>
+            <input #company 
+                    id="company"
+                    placeholder="Company"
+                    [(ngModel)]="contact.company"
+                    formControlName="company"  />    
+        <h4>
+            <label for="email">E-mail</label>
+        </h4>
+            <input #email 
+                    id="email"
+                    placeholder="E-mail"
+                    [(ngModel)]="contact.email"
+                    formControlName="email"  />        
+        </div>
+        <h4>
+            <label >Phones</label>
+        </h4>
+        <div *ngFor="let phone of contact.phones; let i=index;"
+              class="phone">
+            <select #phoneType
+                    [(ngModel)]="contact.phones[i].type">
+                <option 
+                        *ngFor="let type of phone_types"
+                        [value]="type"
+                        >{{type}}</option>
+            </select>
+            <input #phoneNumber 
+                    [(ngModel)]="contact.phones[i].number"
+                    placeholder="Add new number"
+                    class="phone"/>
+            <button *ngIf="phone.id == -1"
+                    (click)="addPhone()"
+                    class="floating actionButton">+</button>
+            <button *ngIf="phone.id !== -1"
+                    (click)="removePhone(phone.id);"
+                    class="floating destructiveButton">-</button>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button (click)="saveContact()"
+        [disabled]="!form.valid"
+        class="actionButton">Save</button>
+        <button (click)="close()"
+                class="destructiveButton">Close</button>
+    </mat-dialog-actions>
 

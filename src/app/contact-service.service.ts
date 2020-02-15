@@ -21,9 +21,9 @@ export class ContactService {
   }
 
   public getContact(id: number): Contact {
-    const currentContactList = this.storageService.get(this.STORAGE_KEY);
+    const currentContactList = this.getContactList();
     const contact = currentContactList.find(c => c.id === id);
-    return contact ?? {};
+    return contact;
   }
 
 

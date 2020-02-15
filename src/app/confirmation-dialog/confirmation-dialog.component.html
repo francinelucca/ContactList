@@ -1,0 +1,10 @@
+<h1 md-dialog-title>Confirm</h1>
+
+<mat-dialog-content>
+    <div>{{confirmationMessage}}</div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button class="actionButton" (click)="close(true)">Confirm</button>
+    <button class="destructiveButton"
+    (click)="close(false)">Cancel</button>
+</mat-dialog-actions>
