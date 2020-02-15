@@ -1,11 +1,12 @@
 
     <h2 mat-dialog-title>{{title}} 
         <span *ngIf="isEdit">
-            {{contact.firstName}} {{contact.lastName}}
+           #{{contact.id}} - {{contact.firstName}} {{contact.lastName}}
         </span>
     </h2>
     <mat-dialog-content>
-        <div [formGroup]="form"><h4>
+        <div [formGroup]="form">
+        <h4>
             <label for="first-name">First Name</label>
         </h4>
             <input  matInput
@@ -37,15 +38,14 @@
                     id="email"
                     placeholder="E-mail"
                     [(ngModel)]="contact.email"
-                    formControlName="email"  />        
-        </div>
+                    formControlName="email"  /> 
         <h4>
             <label >Phones</label>
         </h4>
-        <div *ngFor="let phone of contact.phones; let i=index;"
-              class="phone">
+        <div *ngFor="let phone of contact.phones; let i=index;">
             <select #phoneType
-                    [(ngModel)]="contact.phones[i].type">
+                    [(ngModel)]="contact.phones[i].type"
+                    formControlName="phoneType{{phone.id}}">
                 <option 
                         *ngFor="let type of phone_types"
                         [value]="type"
@@ -54,16 +54,27 @@
             <input #phoneNumber 
                     [(ngModel)]="contact.phones[i].number"
                     placeholder="Add new number"
+                    class="phone"
+                    formControlName="phoneNumber{{phone.id}}"/>
+            <button (click)="removePhone(phone.id);"
+            class="floating destructiveButton"
+            title="remove phone number">-</button>
+        </div>       
+        </div>
+        
+        <div class="phone">
+            <select #phoneType>
+                <option 
+                        *ngFor="let type of phone_types"
+                        >{{type}}</option>
+            </select>
+            <input  #phoneNumber
+                    placeholder="Add new number"
                     class="phone"/>
-            <button *ngIf="phone.id == -1"
-                    (click)="addPhone()"
+            <button (click)="addPhone(phoneType.value, phoneNumber.value); phoneNumber.value=''; phoneType.value='home'"
                     class="floating actionButton"
                     title="add phone number">+</button>
-            <button *ngIf="phone.id !== -1"
-                    (click)="removePhone(phone.id);"
-                    class="floating destructiveButton"
-                    title="remove phone number">-</button>
-        </div>
+        </div>    
     </mat-dialog-content>
     <mat-dialog-actions>
         <button (click)="saveContact()"

@@ -1,6 +1,6 @@
 <ul class="contacts" *ngIf="contacts">
     <li *ngFor="let contact of contacts"
-         (click)="showEditForm(contact.id)"
+         (click)="showEditForm(contact)"
          title="see contact">  
             <span>{{contact.id}}</span> 
             {{contact.firstName}} {{contact.lastName}}

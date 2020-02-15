@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {FormBuilder, Validators, FormGroup} from "@angular/forms";
+import {FormBuilder, Validators, FormGroup, FormControl} from "@angular/forms";
 
 import { Contact, Phone } from '../contact';
 import { ContactService } from '../contact-service.service';
@@ -18,18 +18,13 @@ export class ContactsEditComponent implements OnInit {
   isEdit: boolean;
   phone_types: string[];
   phones: Phone[];
-  defaultPhone: Phone= {
-    id: -1,
-    type:"home",
-    number:""
-  };
   contact: Contact = {
     id: null,
-    firstName: "",
-    lastName: "",
-    company: "",
-    phones: [Object.assign({},this.defaultPhone)],
-    email: ""
+    firstName: " ",
+    lastName: " ",
+    company: " ",
+    phones: [],
+    email: " "
   }
 
   constructor(
@@ -38,31 +33,48 @@ export class ContactsEditComponent implements OnInit {
               private dialogRef: MatDialogRef<ContactsEditComponent>,
               @Inject(MAT_DIALOG_DATA) data
               ) { 
-
-              this.id = data.id;
+              if(data.contact){
+                this.contact = data.contact;
+              }
                this.form = fb.group({
-                 firstName: ['', Validators.required],
-                 lastName: ['', Validators.required],
-                 company: ['', Validators.nullValidator],
-                 email: ['', Validators.nullValidator],
-                 phoneNumber: [''],
-                 phones: [null],
-                 phoneTypes: [null],
-               })
+                 firstName: [this.contact.firstName, Validators.required],
+                 lastName: [this.contact.lastName, Validators.required],
+                 company: [this.contact.company, Validators.nullValidator],
+                 email: [this.contact.email, Validators.nullValidator],
+               });
   }
 
   ngOnInit(): void {
     this.phone_types = PHONE_TYPES;
-    if(this.id){
+    if(this.contact.id){
       this.isEdit= true;
-      this.getContact();
+      this.title = "Update Contact";
+      this.contact.phones.forEach(p => this.createPhoneControl(p));
     }
   }
 
-  addPhone(){
-    let id = this.contact.phones.length;
-    this.contact.phones[this.contact.phones.length-1].id = id;
-    this.contact.phones.push(Object.assign({},this.defaultPhone));
+  createPhoneControl(phone: Phone): void {
+    this.form.addControl(
+        'phoneNumber' + String(phone.id),
+        new FormControl(phone.number, [Validators.required])
+    );
+    this.form.addControl(
+        'phoneType' + String(phone.id),
+        new FormControl(phone.type, [Validators.required])
+    );
+  }
+
+  addPhone(phoneType: string, phoneNumber: string){
+    if(phoneNumber){
+      let id = this.contact.phones.length + 1;
+      let phone = {
+        id: id,
+        type: phoneType,
+        number: phoneNumber,
+      }
+      this.contact.phones.push(phone);
+      this.createPhoneControl(phone);
+    }
   }
 
   removePhone(phoneId: number){
@@ -72,16 +84,9 @@ export class ContactsEditComponent implements OnInit {
     this.contact.phones.splice(index,1);
   }
 
-  getContact() {
-    this.contact = this.contactService.getContact(this.id);
-    this.contact.phones.push(Object.assign({},this.defaultPhone));
-    this.title = "Update Contact:";
-  }
-
   saveContact(){
     if(this.form.valid){
-      this.contact.phones.pop();
-      this.id ? this.contactService.updateContact(this.contact) : this.contactService.addContact(this.contact);
+      this.contact.id ? this.contactService.updateContact(this.contact) : this.contactService.addContact(this.contact);
       this.dialogRef.close(true);
     }
   }

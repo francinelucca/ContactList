@@ -43,11 +43,11 @@ export class ContactsComponent implements OnInit {
       });
   }
 
-  showEditForm(id?: number) {
+  showEditForm(contact?: Contact) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.data= {
-      id: id
+      contact: contact
     };
 
     const dialogRef = this.dialog.open(ContactsEditComponent, dialogConfig);
