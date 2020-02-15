@@ -11,7 +11,7 @@ ul {
     cursor: pointer;
     margin: 1em;
     padding: .3em 0;
-    height: 1.6em;
+    height: 2em;
     border: 1px solid lightgray;
     color: black;  
 }
@@ -45,8 +45,8 @@ span {
     font-weight: bold;
     position: relative;
     left: 0px;
-    top: -4px;
-    height: 1.6em;
+    top: -5px;
+    height: 2.4em;
     margin-right: .8em;
     vertical-align: middle;
     color: lightslategray;

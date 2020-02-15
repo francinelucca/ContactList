@@ -4,10 +4,6 @@ div.phone:last-of-type {
     margin-top: 20px;
 }
 
-div.phone:first-of-type {
-    margin-top: 0px;
-}
-
 h4 {
     margin: 0;
     font-weight: 500;
