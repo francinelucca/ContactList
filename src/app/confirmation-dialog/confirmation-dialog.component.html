@@ -4,7 +4,10 @@
     <div>{{confirmationMessage}}</div>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button class="actionButton" (click)="close(true)">Confirm</button>
+    <button class="actionButton" 
+            (click)="close(true)"
+            title="confirm">Confirm</button>
     <button class="destructiveButton"
-    (click)="close(false)">Cancel</button>
+            (click)="close(false)"
+            title="close">Cancel</button>
 </mat-dialog-actions>
