@@ -35,6 +35,7 @@ export class ContactsComponent implements OnInit {
   deleteContact(contact: Contact): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
+    dialogConfig.disableClose = true;
     dialogConfig.data= {
       confirmationMessage: `Are you sure you want to delete Contact: ${contact.firstName} ${contact.lastName}?`
     };
@@ -54,6 +55,7 @@ export class ContactsComponent implements OnInit {
   showEditForm(contact?: Contact) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
+    dialogConfig.disableClose = true;
     dialogConfig.data= {
       contact: contact
     };
