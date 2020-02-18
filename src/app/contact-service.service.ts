@@ -1,5 +1,6 @@
 import { Inject,Injectable } from '@angular/core';
 import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
+import Lodash from 'lodash';
 
 import { Contact } from './contact';
 
@@ -47,9 +48,10 @@ export class ContactService {
   public updateContact(contact: Contact): void {
     const currentContactList = this.getContactList();
     var index = currentContactList.map(function(c){return c.id}).indexOf(contact.id);
-    if (index){
+    if (index >= 0){
       currentContactList[index] = contact;
     }
+    console.log(currentContactList);
     this.setContactList(currentContactList);
   }
 

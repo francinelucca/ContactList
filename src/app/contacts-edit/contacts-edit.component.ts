@@ -71,7 +71,7 @@ export class ContactsEditComponent implements OnInit {
   }
 
   close(){
-    this.dialogRef.close(false);
+    this.dialogRef.close(true);
   }
 
 }

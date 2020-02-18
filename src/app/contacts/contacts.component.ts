@@ -13,7 +13,8 @@ import { ContactService } from '../contact-service.service';
 })
 export class ContactsComponent implements OnInit {
   allContacts: Contact[];
-  contacts: Contact[];
+  contacts: Contact[] = [];
+  term: string = "";
 
   constructor(private contactService: ContactService,
               private dialog: MatDialog) { }
@@ -22,13 +23,13 @@ export class ContactsComponent implements OnInit {
     this.getContacts();
   }
 
-  search(term: string){
-    this.contacts = this.allContacts.filter(c => `${c.firstName} ${c.lastName}`.includes(term));
+  search(){
+    this.contacts = this.allContacts.filter(c => `${c.firstName} ${c.lastName}`.includes(this.term));
   }
 
   getContacts(): void {
     this.allContacts = this.contactService.getContactList();
-    this.contacts = Object.assign(this.allContacts, this.contacts);
+    this.contacts = Object.assign( this.contacts,this.allContacts);
   }
 
   deleteContact(contact: Contact): void {
@@ -43,7 +44,8 @@ export class ContactsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
       data => {
         if(data){
-          this.contacts = this.contacts.filter(c => c!== contact);
+          this.allContacts = this.allContacts.filter(c => c!== contact);
+          this.search();
           this.contactService.deleteContact(contact);
         }
       });
@@ -62,6 +64,7 @@ export class ContactsComponent implements OnInit {
       data => {
         if(data){
           this.getContacts();
+          this.search();
         }
       }
     );
