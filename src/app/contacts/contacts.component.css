@@ -1,8 +1,15 @@
 ul {
     list-style-type: none;
     padding: 0;
-    width: 25em;
     margin: 0 auto 3em auto;
+    float: left;
+    width: 33%;
+}
+
+table {
+    float: left;
+    width: 66%;
+    margin-top: 20px;
 }
 
 .contacts li {
@@ -63,4 +70,36 @@ button {
     font-size: x-large;
     font-weight: bold;
     color:lightslategray;
+}
+
+.emptyList img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+}
+
+input {
+    width: 250px;
+    margin-left: 15px;
+    margin-top: 10px;
+    border-radius: 4px;
+}
+table {
+    text-align: center;
+}
+tr {
+    text-align: center;
+    cursor: pointer;
+}
+th {
+    text-align: center;
+}
+tr:hover:nth-child(n) {
+    background-color: darkgray;
+}
+
+ngb-alert {
+    margin: 10px auto;
+    text-align: center;
 }

@@ -12,6 +12,7 @@ import { ContactService } from '../contact-service.service';
   styleUrls: ['./contacts.component.css']
 })
 export class ContactsComponent implements OnInit {
+  allContacts: Contact[];
   contacts: Contact[];
 
   constructor(private contactService: ContactService,
@@ -21,8 +22,13 @@ export class ContactsComponent implements OnInit {
     this.getContacts();
   }
 
+  search(term: string){
+    this.contacts = this.allContacts.filter(c => `${c.firstName} ${c.lastName}`.includes(term));
+  }
+
   getContacts(): void {
-    this.contacts = this.contactService.getContactList();
+    this.allContacts = this.contactService.getContactList();
+    this.contacts = Object.assign(this.allContacts, this.contacts);
   }
 
   deleteContact(contact: Contact): void {

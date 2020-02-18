@@ -4,85 +4,130 @@
            #{{contact.id}} - {{contact.firstName}} {{contact.lastName}}
         </span>
     </h2>
+    <form  name="form" #f="ngForm">
     <mat-dialog-content>
-        <div [formGroup]="form">
-        <h4>
-            <label for="first-name">First Name</label>
-        </h4>
-            <input  matInput
-                    #firstName 
-                    id="first-name"
-                    placeholder="First Name"
-                    [(ngModel)]="contact.firstName"
-                    formControlName="firstName" />
-        <h4>
-            <label for="last-name">Last Name</label>
-        </h4>
-            <input #lastName 
-                    id="last-name"
-                    placeholder="Last Name"
-                    [(ngModel)]="contact.lastName"
-                    formControlName="lastName"  />
-        <h4>
-            <label for="company">Company</label>
-        </h4>
-            <input #company 
-                    id="company"
-                    placeholder="Company"
-                    [(ngModel)]="contact.company"
-                    formControlName="company"  />    
-        <h4>
-            <label for="email">E-mail</label>
-        </h4>
-            <input #email 
-                    id="email"
-                    placeholder="E-mail"
-                    [(ngModel)]="contact.email"
-                    formControlName="email"  /> 
-        <h4>
-            <label >Phones</label>
-        </h4>
-        <div *ngFor="let phone of contact.phones; let i=index;">
-            <select #phoneType
-                    [(ngModel)]="contact.phones[i].type"
-                    formControlName="phoneType{{phone.id}}">
-                <option 
-                        *ngFor="let type of phone_types"
-                        [value]="type"
-                        >{{type}}</option>
-            </select>
-            <input #phoneNumber 
-                    [(ngModel)]="contact.phones[i].number"
-                    placeholder="Add new number"
-                    class="phone"
-                    formControlName="phoneNumber{{phone.id}}"/>
-            <button (click)="removePhone(phone.id);"
-            class="floating destructiveButton"
-            title="remove phone number">-</button>
-        </div>       
-        </div>
-        
-        <div class="phone">
-            <select #phoneType>
-                <option 
-                        *ngFor="let type of phone_types"
-                        >{{type}}</option>
-            </select>
-            <input  #phoneNumber
-                    placeholder="Add new number"
-                    class="phone"/>
-            <button (click)="addPhone(phoneType.value, phoneNumber.value); phoneNumber.value=''; phoneType.value='home'"
-                    class="floating actionButton"
-                    title="add phone number">+</button>
-        </div>    
-    </mat-dialog-content>
-    <mat-dialog-actions>
-        <button (click)="saveContact()"
-        [disabled]="!form.valid"
-        class="actionButton"
-        title="save contact">Save</button>
-        <button (click)="close()"
-                class="destructiveButton"
-                title="close">Close</button>
-    </mat-dialog-actions>
-
+            <h4>
+                <label for="firstName">First Name</label>
+            </h4>
+                <input  #firstName="ngModel"
+                        required
+                        name="firstName"
+                        placeholder="First Name"
+                        [(ngModel)]="contact.firstName" />
+            <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
+                >
+                <div *ngIf="firstName.errors.required">  
+                    <ngb-alert [dismissible]="false" type="danger">
+                        First Name Required
+                  </ngb-alert>
+                </div>
+            </div>
+            <h4>
+                <label for="lastName">Last Name</label>
+            </h4>
+                <input #lastName="ngModel"
+                        required
+                        name="lastName"
+                        placeholder="Last Name"
+                        [(ngModel)]="contact.lastName" />
+            <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)"
+                >
+                <div *ngIf="lastName.errors.required"> 
+                    <ngb-alert [dismissible]="false" type="danger">
+                        Last Name Required
+                  </ngb-alert>
+                </div>
+            </div>
+            <h4>
+                <label for="company">Company</label>
+            </h4>
+                <input #company 
+                        name="company"
+                        placeholder="Company"
+                        [(ngModel)]="contact.company" />    
+            <h4>
+                <label for="email">E-mail</label>
+            </h4>
+                <input #email="ngModel"
+                        name="email"
+                        placeholder="E-mail"
+                        [(ngModel)]="contact.email"
+                        email  /> 
+                
+                <div *ngIf="email.invalid && (email.dirty || email.touched)"
+                >
+                    <div *ngIf="email.errors.email"> 
+                    <ngb-alert [dismissible]="false" type="danger">
+                        Invalid Email
+                    </ngb-alert>
+                    </div>
+                </div>
+            <h4>
+                <label >Phones</label>
+            </h4>
+            <div *ngFor="let phone of contact.phones; let i=index;">
+                <select #phoneType
+                        name="phoneType-{{phone.id}}"
+                        [(ngModel)]="contact.phones[i].type">
+                    <option 
+                            *ngFor="let type of phone_types"
+                            [value]="type"
+                            >{{type}}</option>
+                </select>
+                <input #phoneNumber="ngModel"
+                        name="phoneNumber-{{phone.id}}"
+                        [(ngModel)]="contact.phones[i].number"
+                        placeholder="Add new number"
+                        class="phone"
+                        pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$"/>
+                <button (click)="removePhone(phone.id);"
+                class="floating destructiveButton"
+                title="remove phone number">-</button>
+                <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)"
+                >
+                    <div *ngIf="phoneNumber.errors.pattern"> 
+                    <ngb-alert [dismissible]="false" type="danger">
+                        Invalid Phone Number
+                    </ngb-alert>
+                    </div>
+                </div>
+            </div>
+            <div class="phone">
+                <select #phoneType>
+                    <option 
+                            *ngFor="let type of phone_types"
+                            >{{type}}</option>
+                </select>
+                <input  #addPhoneNumber="ngModel"
+                        name="addPhoneNumber"
+                        [(ngModel)]="emptyString"
+                        placeholder="Add new number"
+                        class="phone"
+                        pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$"/>
+                
+                <button (click)="addPhone(phoneType.value, addPhoneNumber.value); emptyString=''; phoneType.value='home'"
+                class="floating actionButton"
+                title="add phone number"
+                [disabled]="addPhoneNumber.invalid">+</button>
+                <div *ngIf="addPhoneNumber.invalid && (addPhoneNumber.dirty || addPhoneNumber.touched)"
+                >
+                    <div *ngIf="addPhoneNumber.errors.pattern"> 
+                    <ngb-alert [dismissible]="false" type="danger">
+                        Invalid Phone Number
+                    </ngb-alert>
+                    </div>
+                </div>
+            </div>
+        </mat-dialog-content>
+        <mat-dialog-actions>
+            <button (click)="saveContact()"
+            [disabled]="!f.form.valid"
+            class="actionButton"
+            title="save contact">Save</button>
+            <button (click)="close()"
+                    class="destructiveButton"
+                    title="close">Close</button>
+        </mat-dialog-actions>
+    
+        </form>
+       

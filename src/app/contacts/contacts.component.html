@@ -1,15 +1,51 @@
-<ul class="contacts" *ngIf="contacts">
-    <li *ngFor="let contact of contacts"
-         (click)="showEditForm(contact)"
-         title="see contact">  
-            <span>{{contact.id}}</span> 
-            {{contact.firstName}} {{contact.lastName}}
-        <img  class="delete"
-            src="assets/img/delete.png"
-             (click)="deleteContact(contact); $event.stopPropagation()" 
-             height="20"
-             title="delete contact"/>
-    </li>
-</ul>
+
+<div *ngIf="contacts.length > 0; else emptyList" class="clearfix">
+    <ul class="contacts" >
+        <div id="search-component">
+            <input #searchBox id="search-box" 
+                   (input)="search(searchBox.value)"
+                   placeholder="Filter Your Contacts" />
+        </div>
+        <li *ngFor="let contact of contacts"
+             (click)="showEditForm(contact)"
+             title="see contact">  
+                <span>{{contact.id}}</span> 
+                {{contact.firstName}} {{contact.lastName}}
+            <img  class="delete"
+                src="assets/img/delete.png"
+                 (click)="deleteContact(contact); $event.stopPropagation()" 
+                 height="20"
+                 title="delete contact"/>
+        </li>
+    </ul>
+    
+    <table class="table table-striped">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Company</th>
+          <th scope="col">E-mail</th>
+          <th scope="col">Phone Numbers</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let contact of contacts; index as i"  (click)=showEditForm(contact)>
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{contact.firstName}} {{contact.lastName}}</td>
+          <td>{{ contact.company }}</td>
+          <td>{{ contact.email }}</td>
+          <td>{{ contact.phones.length }}</td>
+        </tr>
+        </tbody>
+      </table>
+</div>
+
+
+<ng-template #emptyList> 
+    <ngb-alert [dismissible]="false" type="secondary">
+        <Strong>There are no contacts registered at this time</Strong>
+    </ngb-alert>
+</ng-template>
 <button (click)="showEditForm()"
         title="create new contact">+</button>
